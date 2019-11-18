@@ -184,17 +184,18 @@ const fs = require('fs');
 //         console.log('Folder deleted')
 // });
 
-const zlib = require('zlib');
+// const zlib = require('zlib');
 
-const gzip = zlib.createGzip();
+// const gzip = zlib.createGzip();
+// const gunzip = zlib.createGunzip();
 
-const readStream = fs.createReadStream('example.txt', 'utf8');
-const writeStream = fs.createWriteStream('example2.gz');
+// const readStream = fs.createReadStream('example.txt', 'utf8');
+// const writeStream = fs.createWriteStream('example2.gz');
 
-// readStream.on('data', (chunk) => {
-//     console.log(chunk);
-//     writeStream.write(chunk);
-// });
+// // readStream.on('data', (chunk) => {
+// //     console.log(chunk);
+// //     writeStream.write(chunk);
+// // });
 
-readStream.pipe(gzip).pipe(writeStream);
+// readStream.pipe(gzip).pipe(writeStream);
 
