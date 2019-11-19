@@ -1,23 +1,39 @@
-const express = require('express');
-const path = require('path');
-const app = express();
-app.use('/public', express.static(path.join(__dirname, 'static')));
+var express = require('express');
+var app = express();
+var multer = require('multer')
+var cors = require('cors');
 
-app.get('/', (req,res) => {
-    // res.send('Hello World');
-    res.sendFile(path.join(__dirname, 'static', 'index.html'));
-});
+app.use(cors())
 
-app.get('/example', (req,res) => {
-    res.send('Hello Example');
-});
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+    cb(null, 'public')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' +file.originalname )
+  }
+})
 
-app.get('/example/:name/:age', (req,res) => {
+var upload = multer({ storage: storage }).array('file')
+
+app.post('/upload/:sid',function(req, res) {
+
     console.log(req.params);
-    console.log(req.query);
-    res.send(req.params.name + " : " + req.params.age);
+     
+    upload(req, res, function (err) {
+           if (err instanceof multer.MulterError) {
+               return res.status(500).json(err)
+           } else if (err) {
+               return res.status(500).json(err)
+           }
+      return res.status(200).send(req.file)
+
+    })
+
 });
 
+app.listen(8000, function() {
 
+    console.log('App running on port 8000');
 
-app.listen(5000);
+});
